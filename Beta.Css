@@ -5,19 +5,60 @@ body {
 display: flex;
 flex-direction: column;
 align-items: center;
-background-color: white;
 margin: 0;
 font-family: Verdana, Geneva, Tahoma, sans-serif;
+background-color: rgb(15, 15, 15);
 }
 h1{
 font-size: 40px;
+color: rgb(225, 249, 255);
+text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1em #BFE2FF;
+}
+h2{
+    color: rgb(178, 248, 176);
+text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;
+}
+h1 span{
+animation: neon linear infinite 10s;
+}
+@keyframes neon {
+    78% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+    79%{
+        color: #0b3960;
+    }
+    80% {
+        text-shadow: none;
+    }
+    81% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+    82% {
+        color: #0b3960;
+        text-shadow: none;
+    }
+    83% {
+        color: inherit;
+        text-shadow: inherit;
+    }
+    92% {
+        color: #0b3960;
+        text-shadow: none;
+    }
+    92.5% {
+        color: inherit;
+        text-shadow: inherit;
+    }
 }
 .grid {
 display: flex;
 flex-wrap: wrap;
 width: 410px;
 height: 400px;
-background-color: white;
+background-color: rgb(15, 15, 15);
 border: 5px solid black;
 padding-top: 5px;
 }
@@ -29,15 +70,15 @@ justify-content: center;
 align-items: center;
 cursor: pointer;
 box-sizing: border-box;
-border: 1px solid #ffeeff;
+border: 1px solid rgb(15, 15, 15);
 }
 .menu{
-visibility: visible; 
+visibility: hidden; 
 z-index: 999;
 width: 100%;
 height: 100%;
 position: fixed;
-background-color: rgba(54, 54, 54,0.5);
+background-color: rgba(0, 0, 0, 0.7);
 }
 .Title{
     margin: 0 auto;
@@ -83,9 +124,9 @@ background-color: rgba(54, 54, 54,0.5);
     position: relative;
   }
   .btn-three:hover{
-    -webkit-box-shadow: 0px 0px 17px 5px rgba(17, 134, 223, 0.45);
--moz-box-shadow: 0px 0px 17px 5px rgba(17, 134, 223, 0.45);
-box-shadow: 0px 0px 17px 5px rgba(17, 134, 223, 0.45);
+    -webkit-box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
+    -moz-box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
+    box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
     transition: all 300ms ease-in-out;
   }
 /*Фигуры */
