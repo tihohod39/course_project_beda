@@ -1,13 +1,12 @@
 
         const grid = document.querySelector('.grid');
         const scoreDisplay = document.getElementById('score');
-        const width = 8;
         const squares = [];
         let score = 0;
 
-        const shapes = ['circle', 'square'];
+        const shapes = ['circle', 'square','oval'];
 
-        // 1. Создание поля
+        //Создание поля
         function createBoard() {
             for (let i = 0; i < 56; i++) {
                 const square = document.createElement('div');
@@ -21,6 +20,7 @@
                 squares.push(shapeElement);
             }
         }
+        //Поле 7 на 8 заполненное рандомно квадрат / круг
         createBoard();
 
         
