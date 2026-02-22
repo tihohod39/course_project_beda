@@ -3,10 +3,10 @@
         const scoreDisplay = document.getElementById('score');
         const squares = [];
         let score = 0;
-
+        const width = 8;
         const shapes = ['circle', 'square','oval'];
 
-        //Создание поля
+        //Создание поля + добавление перетягивания
         function createBoard() {
             for (let i = 0; i < 56; i++) {
                 const square = document.createElement('div');
@@ -20,7 +20,19 @@
                 squares.push(shapeElement);
             }
         }
-        //Поле 7 на 8 заполненное рандомно квадрат / круг
+        //Поле 7 на 8 заполненное рандомно квадрат / круг / типо-овал хз
         createBoard();
+
+// логика перетагивания "настоящая"
+
+let shapeDrag;
+let shapeReplace;
+let idDrag;
+let idReplace;
+
+
+
+
+
 
         
