@@ -4,13 +4,30 @@
         const squares = [];
         let score = 0;
         const width = 8;
-        const shapes = ['circle', 'square','oval'];
+        const shapes = ['circle', 'square','oval','pyramid','sun','moon'];
 
         //Закрытие меню
         document.getElementById("btnClose").onclick = function()
         {
         let vid = document.getElementsByClassName("menu");
         vid[0].style.visibility = "hidden";
+        let vid2 = document.getElementById("btnOpen")
+        vid2[0].style.visibility = "visible";
+        }
+        //restart
+        document.getElementById("btnRestart").onclick = function()
+        {
+            let vid = document.getElementsByClassName("menu");
+            vid[0].style.visibility = "hidden";
+            window.location.reload()
+        }
+        //Открытие меню
+        document.getElementById("btnOpen").onclick = function()
+        {
+            let vid = document.getElementsByClassName("menu");
+            vid[0].style.visibility = "visible";
+            let vid2 = document.getElementById("btnOpen")
+            vid2[0].style.visibility = "hidden";
         }
         //Создание поля + добавление перетягивания
         function createBoard() {
@@ -19,6 +36,15 @@
                 let randomShape = shapes[Math.floor(Math.random() * shapes.length)];
                 const shapeElement = document.createElement('div');
                 shapeElement.setAttribute('draggable', true);
+                if(i == 10 || i == 13 || i == 42 || i == 45){
+                    shapeElement.setAttribute('draggable', false);
+                    shapeElement.setAttribute('class', 'immovable');
+                    shapeElement.setAttribute('id', i);
+                    square.appendChild(shapeElement);
+                    grid.appendChild(square);
+                    squares.push(shapeElement);
+                    continue
+                } 
                 shapeElement.setAttribute('id', i);
                 shapeElement.classList.add(randomShape);
                 square.appendChild(shapeElement);
@@ -26,12 +52,12 @@
                 squares.push(shapeElement);
             }
         }
-        //Поле 7 на 8 заполненное рандомно : квадрат / круг / типо-овал хз
+        //Поле 7 на 8 заполненное рандомно : квадрат / круг / типо-овал хз / типо пирамида / Лучше заменить на фото 
         createBoard();
 
-// логика перетагивания "настоящая"
+// логика перетягивания "настоящая"
 
-// 2. Логика перетаскивания (Drag & Drop)
+// Логика перетаскивания (Drag & Drop)
         let shapeBeingDragged;
         let shapeBeingReplaced;
         let idBeingDragged;
@@ -69,12 +95,30 @@
             // Проверка по горизонтали
             for (let i = 0; i < 54; i++) {
                 let rowOfThree = [i, i + 1, i + 2];
+                let rowOfFour = [i, i + 1, i + 2, i + 3];
+                let rowOfFive = [i, i + 1, i + 2, i + 3, i + 4];
                 let VIbrannayaFigura = squares[i].className;
                 const isBlank = squares[i].className === '';
 
                 // Ограничение, чтобы ряд не перепрыгивал на другую строку
                 if (i % 8 > 5) continue; 
 
+                if (rowOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    score += 5;
+                    scoreDisplay.innerHTML = score;
+                    rowOfFive.forEach(index => {
+                        squares[index].className = ''; // "удаляем нафиг"
+                        refillBoard(index);
+                    });
+                }
+                if (rowOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    score += 4;
+                    scoreDisplay.innerHTML = score;
+                    rowOfFour.forEach(index => {
+                        squares[index].className = ''; // "удаляем нафиг"
+                        refillBoard(index);
+                    });
+                }
                 if (rowOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
                     score += 3;
                     scoreDisplay.innerHTML = score;
@@ -83,14 +127,34 @@
                         refillBoard(index);
                     });
                 }
+               
+                
             }
             
             // Проверка по вертикали
-            for (let i = 0; i < 54; i++) {
+            for (let i = 0; i < 40; i++) {
                 let columnOfThree = [i, i + width, i + width * 2];
+                let columnOfFour = [i, i + width, i + width * 2 , i + width * 3];
+                let columnOfFive = [i, i + width, i + width * 2, i + width * 3, i + width * 4];
                 let VIbrannayaFigura = squares[i].className;
                 const isBlank = squares[i].className === '';
 
+                if (columnOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    score += 5;
+                    scoreDisplay.innerHTML = score;
+                    columnOfFive.forEach(index => {
+                        squares[index].className = ''; // "удаляем нафиг"
+                        refillBoard(index);
+                    });
+                }
+                if (columnOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    score += 4;
+                    scoreDisplay.innerHTML = score;
+                    columnOfFour.forEach(index => {
+                        squares[index].className = ''; // "удаляем нафиг"
+                        refillBoard(index);
+                    });
+                }
                 if (columnOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
                     score += 3;
                     scoreDisplay.innerHTML = score;
@@ -99,6 +163,13 @@
                         refillBoard(index);
                     });
                 }
+            }
+            for (let i = 0; i < 56; i++) {
+            if(squares[index].className== "immovable"){
+                squares[index].setAttribute('draggable','false')
+            }else{
+                squares[index].setAttribute('draggable','true')
+            }
             }
         }
 // 4. Заполнение пустых мест
@@ -111,7 +182,7 @@
             }, 200);
         }
 
-        // Авто-проверка каждые 100мс
+        // Авто-проверка каждые 200мс
         window.setInterval(() => {
             checkMatches();
         }, 100);
