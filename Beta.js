@@ -72,9 +72,17 @@
             idBeingDragged = parseInt(this.id);
         }
 
+        
         function dragDrop() {
             shapeBeingReplaced = this.className;
             idBeingReplaced = parseInt(this.id);
+
+            if (this.classList.contains('immovable')) {
+        return;
+    }
+            if (squares[idBeingDragged].classList.contains('immovable')) {
+        return;
+    }
 
             // Проверка: можно ли ходить (только соседние клетки)
             const validMoves = [
@@ -83,7 +91,7 @@
                 idBeingDragged - width,
                 idBeingDragged + width
             ];
-
+            
             if (validMoves.includes(idBeingReplaced)) {
                 this.className = shapeBeingDragged;
                 squares[idBeingDragged].className = shapeBeingReplaced;
@@ -182,7 +190,7 @@
             }, 200);
         }
 
-        // Авто-проверка каждые 200мс
+        // Авто-проверка каждые 100мс
         window.setInterval(() => {
             checkMatches();
         }, 100);
