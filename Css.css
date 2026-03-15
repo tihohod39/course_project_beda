@@ -9,23 +9,31 @@ margin: 0;
 font-family: Verdana, Geneva, Tahoma, sans-serif;
 background-color: rgb(15, 15, 15);
 }
-.buttons{
+a{
+    text-decoration: none;
+}
+button, div{
+    cursor: pointer;
+}
+.buttons, .levels {
     display: flex;
     flex-flow: column;
-    gap: 100px;
+    gap: 90px;
     margin-top: 200px;
+    width: 300px;
 }
 .buttons div {
     display: flex;
    justify-content: center;
    align-items: center;
+  
 }
-.buttons button, a {
+.buttons button{
     width: 300px;
     height: 40px;
      background-color: rgb(27, 27, 27);
 }
-.buttons button:hover,a :hover{
+.buttons button:hover,a :hover ,.levels div:hover,.levels button:hover{
     -webkit-box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
     -moz-box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
     box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
@@ -33,4 +41,28 @@ background-color: rgb(15, 15, 15);
     color: rgb(0, 255, 127);
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;
     transition: all 100ms ease-in-out;
+}
+.levels{
+    visibility: hidden;
+    position: absolute;
+    margin-top: -300px;
+    background-color: rgba(0, 0, 0, 0.185)
+}
+.levels div{
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(27, 27, 27);
+    border: 1px solid gray;
+}
+.levels div a{
+    color: whitesmoke;
+}
+.levels button{
+    width: 300px;
+    height: 40px;
+    background-color: rgb(27, 27, 27);
+    color: whitesmoke;
+    border: 1px solid gray;
 }
