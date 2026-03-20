@@ -62,7 +62,7 @@ background-color: rgb(15, 15, 15);
 border: 5px solid black;
 padding-top: 5px;
 }
-.grid2 {
+#grid2 {
     display: flex;
     flex-wrap: wrap;
     width: 910px;
@@ -125,9 +125,14 @@ background-color: rgba(0, 0, 0, 0.7);
     background-color: rgb(27, 27, 27);
     visibility: visible;
 }
-.buttons button,a{
+#btnRestart{
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 300px;
+}
+button,a{
     height: 40px;
-    background-color: rgb(110, 110, 110);
+    background-color: rgba(31, 31, 31, 0.76);
     border: none;
     cursor: pointer;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -154,7 +159,7 @@ background-color: rgba(0, 0, 0, 0.7);
 }
 
 .btn-three {
-    color: black;
+    color: rgb(148, 148, 148);
     transition: border, box-shadow 0.5s;
     position: relative;
   }
