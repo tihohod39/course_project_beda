@@ -1,9 +1,10 @@
 
+        
         const grid = document.querySelector('.grid');
         const scoreDisplay = document.getElementById('score');
         const squares = [];
         let score = 0;
-        const width = 8;
+        const width = 12;
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
 
         //Закрытие меню
@@ -16,7 +17,13 @@
         let vid3 = document.getElementById("btnRestart")
         vid2[0].style.visibility = "visible";
         }
-      
+        //restart
+        document.getElementById("btnRestart").onclick = function()
+        {
+            let vid = document.getElementsByClassName("menu");
+            vid[0].style.visibility = "hidden";
+            window.location.reload()
+        }
         //Открытие меню
         document.getElementById("btnOpen").onclick = function()
         {
@@ -27,30 +34,14 @@
             let vid3 = document.getElementById("btnRestart")
             vid2[0].style.visibility = "hidden";
         }
-
-        //Открытие настроек *NEW
-        document.getElementById("btnOptions").onclick = function()
-        {
-            let vid = document.getElementsByClassName("options");
-            vid[0].style.visibility = "visible";
-        }
-          //restart
-          document.getElementById("btnRestart").onclick = function()
-          {
-              let vid = document.getElementsByClassName("menu");
-              vid[0].style.visibility = "hidden";
-              window.location.reload()
-          }
-
         //Создание поля
         function createBoard() {
-            for (let i = 0; i < 56; i++) {
+            for (let i = 0; i < 108; i++) {
                 const square = document.createElement('div');
                 let randomShape = shapes[Math.floor(Math.random() * shapes.length)];
                 const shapeElement = document.createElement('div');
                 shapeElement.setAttribute('draggable', true);
-                
-                if(i<56 &&i>47 ||i==47 ||i==39 ||i<8 &&i>-1||i==8||i==16){
+                if(i%8== 1 || i >95 && i<108){
                     shapeElement.setAttribute('draggable', false);
                     shapeElement.setAttribute('class', 'immovable');
                     shapeElement.setAttribute('id', i);
@@ -67,7 +58,6 @@
                 squares.push(shapeElement);
             }
         }
-        //Поле 7 на 8 заполненное рандомно : квадрат / круг / типо-овал хз / типо пирамида / Лучше заменить на фото 
         createBoard();
 
 // логика перетягивания "настоящая"
@@ -115,7 +105,7 @@
         // 3. Проверка совпадений
         function checkMatches() {
             // Проверка по горизонтали
-            for (let i = 0; i < 54; i++) {
+            for (let i = 0; i < 108; i++) {
                 let rowOfThree = [i, i + 1, i + 2];
                 let rowOfFour = [i, i + 1, i + 2, i + 3];
                 let rowOfFive = [i, i + 1, i + 2, i + 3, i + 4];
@@ -126,7 +116,7 @@
                 const isBlank = squares[i].className === '';
 
                 // Ограничение, чтобы ряд не перепрыгивал на другую строку
-                if (i % 8 > 5) continue; 
+                if (i % 12 > 9) continue; 
 
                 if (rowOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
                     score += 5;
@@ -157,7 +147,7 @@
             }
             
             // Проверка по вертикали
-            for (let i = 0; i < 56; i++) {
+            for (let i = 0; i < 96; i++) {
                 let columnOfThree = [i, i + width, i + width * 2];
                 let columnOfFour = [i, i + width, i + width * 2 , i + width * 3];
                 let columnOfFive = [i, i + width, i + width * 2, i + width * 3, i + width * 4];

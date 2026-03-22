@@ -18,7 +18,7 @@ button, div{
 .buttons, .levels {
     display: flex;
     flex-flow: column;
-    gap: 90px;
+    gap: 70px;
     margin-top: 200px;
     width: 300px;
 }
@@ -26,12 +26,14 @@ button, div{
     display: flex;
    justify-content: center;
    align-items: center;
+   border-radius: 5px;
   
 }
 .buttons button{
     width: 300px;
     height: 40px;
      background-color: rgb(27, 27, 27);
+     border-radius: 5px;
 }
 .buttons button:hover,a :hover ,.levels div:hover,.levels button:hover{
     -webkit-box-shadow: 0px 0px 17px 5px rgba(93, 255, 133, 0.45);
@@ -42,19 +44,19 @@ button, div{
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;
     transition: all 100ms ease-in-out;
 }
-.levels{
+.levels , .options{
     visibility: hidden;
     position: absolute;
     margin-top: -300px;
     background-color: rgba(0, 0, 0, 0.185)
 }
-.levels div{
+.levels div , .options div{
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgb(27, 27, 27);
-    border: 1px solid gray;
+    border-radius: 5px;
 }
 .levels div a{
     color: whitesmoke;
@@ -64,5 +66,6 @@ button, div{
     height: 40px;
     background-color: rgb(27, 27, 27);
     color: whitesmoke;
-    border: 1px solid gray;
+    border: none;
+    border-radius: 5px;
 }
