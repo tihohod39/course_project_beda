@@ -33,7 +33,16 @@
         {
             let vid = document.getElementsByClassName("options");
             vid[0].style.visibility = "visible";
+            let vid2 = document.getElementsByClassName("ochert")
+            vid2[0]
         }
+          //Открытие настроек *NEW
+          document.getElementById("btnClose2").onclick = function()
+          {
+              let vid = document.getElementsByClassName("options");
+              vid[0].style.visibility = "hidden";
+
+          }
           //restart
           document.getElementById("btnRestart").onclick = function()
           {
