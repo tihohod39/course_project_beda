@@ -161,7 +161,7 @@
                         refillBoard(index);
                     });
                 }
-               
+        
                 
             }
             
@@ -217,7 +217,7 @@
             checkMatches();
         }, 200);
 
-        
+
 
         
 

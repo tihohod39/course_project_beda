@@ -31,9 +31,7 @@ a{
    border: 2px solid rgb(104, 240, 99);
    border-radius: 3px;
    padding: 100px;
-   background: -webkit-linear-gradient(135deg, rgb(89, 133, 87), rgb(37, 37, 37) 40%);
-background: -moz-linear-gradient(135deg, rgb(89, 133, 87), rgb(37, 37, 37) 40%);
-background: linear-gradient(135deg, rgb(89, 133, 87), rgb(37, 37, 37) 40%);
+   
 }
 .buttons div {
     display: flex;
