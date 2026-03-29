@@ -3,6 +3,7 @@
         const scoreDisplay = document.getElementById('score');
         const squares = [];
         let score = 0;
+        let moves = 40;
         const width = 8;
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
 
@@ -11,10 +12,6 @@
         {
         let vid = document.getElementsByClassName("menu");
         vid[0].style.visibility = "hidden";
-        let vid2 = document.getElementById("btnOpen")
-        vid2[0].style.visibility = "visible";
-        let vid3 = document.getElementById("btnRestart")
-        vid2[0].style.visibility = "visible";
         }
       
         //Открытие меню
@@ -22,10 +19,6 @@
         {
             let vid = document.getElementsByClassName("menu");
             vid[0].style.visibility = "visible";
-            let vid2 = document.getElementById("btnOpen")
-            vid2[0].style.visibility = "hidden";
-            let vid3 = document.getElementById("btnRestart")
-            vid2[0].style.visibility = "hidden";
         }
 
         //Открытие настроек *NEW
@@ -33,16 +26,22 @@
         {
             let vid = document.getElementsByClassName("options");
             vid[0].style.visibility = "visible";
-            let vid2 = document.getElementsByClassName("ochert")
-            vid2[0]
         }
-          //Открытие настроек *NEW
+          //Закрытие настроек *NEW
           document.getElementById("btnClose2").onclick = function()
           {
               let vid = document.getElementsByClassName("options");
               vid[0].style.visibility = "hidden";
-
           }
+          //change theme1
+         /* document.getElementById("btnTheme").onclick = function(){
+            let vid = document.getElementById("btnTheme")
+            vid[0].style.visibility = "hidden";
+            let vid2 = document.getElementById("btnTheme2")
+            vid2[0].style.visibility = "visible";
+            let vid3 = document.getElementsByClassName("options")
+            vid3[0].style.backgroundColor = "red";
+          }*/
           //restart
           document.getElementById("btnRestart").onclick = function()
           {
@@ -118,11 +117,16 @@
             if (validMoves.includes(idBeingReplaced)) {
                 this.className = shapeBeingDragged;
                 squares[idBeingDragged].className = shapeBeingReplaced;
-                checkMatches();
+                let isAmatch =checkMatches();
+                if(!isAmatch){
+                    squares[idBeingDragged].className = shapeBeingDragged;
+            this.className = shapeBeingReplaced;
+                }
             }
         }
         // 3. Проверка совпадений
         function checkMatches() {
+            let hasMatch =false;
             // Проверка по горизонтали
             for (let i = 0; i < 54; i++) {
                 let rowOfThree = [i, i + 1, i + 2];
@@ -138,6 +142,7 @@
                 if (i % 8 > 5) continue; 
 
                 if (rowOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 5;
                     scoreDisplay.innerHTML = score;
                     rowOfFive.forEach(index => {
@@ -146,6 +151,7 @@
                     });
                 }
                 if (rowOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 4;
                     scoreDisplay.innerHTML = score;
                     rowOfFour.forEach(index => {
@@ -154,6 +160,7 @@
                     });
                 }
                 if (rowOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 3;
                     scoreDisplay.innerHTML = score;
                     rowOfThree.forEach(index => {
@@ -176,6 +183,7 @@
                     continue
                     } 
                 if (columnOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 5;
                     scoreDisplay.innerHTML = score;
                     columnOfFive.forEach(index => {
@@ -184,6 +192,7 @@
                     });
                 }else
                 if (columnOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 4;
                     scoreDisplay.innerHTML = score;
                     columnOfFour.forEach(index => {
@@ -192,6 +201,7 @@
                     });
                 }else
                 if (columnOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 3;
                     scoreDisplay.innerHTML = score;
                     columnOfThree.forEach(index => {
@@ -200,8 +210,12 @@
                     });
                 }
             }
-            
+           return hasMatch ;
         }
+
+
+
+
 // 4. Заполнение пустых мест
         function refillBoard(index) {
             // Я хз как заставить их падать , просто заменяем на новую случайную фигуру

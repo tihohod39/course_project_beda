@@ -102,14 +102,17 @@ background-color: rgba(0, 0, 0, 0.7);
     visibility: hidden; 
     z-index: 1000;
     width: 500px;
-    height: 200px;
+    height: 400px;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7); 
     margin: -250px -130px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     
+}
+#btnTheme{
+    visibility: hidden;
 }
 .Title{
     margin: 0 auto;
@@ -170,8 +173,8 @@ button,a{
     background-color: rgb(27, 27, 27);
     width: 270px;
     padding: 10px;
-    height: 500px;
-    margin: 30px auto;
+    height: 400px;
+    margin: 60px auto;
     border-radius: 10px;
     border: 3px solid rgb(0, 255, 127);
     -webkit-box-shadow: 0px 0px 17px 5px rgba(0, 255, 127, 0.45);
