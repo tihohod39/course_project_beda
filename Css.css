@@ -101,4 +101,5 @@ button:hover,a :hover ,.levels div:hover,.levels button:hover{
 }
 button{
   border: 1px solid black;  
+  color: whitesmoke;
 }

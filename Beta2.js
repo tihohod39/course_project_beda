@@ -7,6 +7,8 @@
         const width = 18;
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
 
+
+        
         //Закрытие меню
         document.getElementById("btnClose").onclick = function()
         {

@@ -1,5 +1,4 @@
-
-        
+     
         const grid = document.querySelector('.grid');
         const scoreDisplay = document.getElementById('score');
         const squares = [];
@@ -7,6 +6,77 @@
         const width = 12;
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
 
+// Изменение цвета
+        let theme = 3;
+        const buttons = document.querySelectorAll('button');
+        const a = document.querySelectorAll('a');
+        const ochert = document.getElementsByClassName('ochert');
+        const h2 = document.querySelectorAll('h2');
+        function changeColor() {
+            switch (theme) {
+                case 1:{
+                document.body.style.backgroundColor = 'rgb(37 37 37)';
+                buttons[0].style.borderColor = "rgb(104 240 99)";
+                buttons.forEach( btn=>{
+                    btn.style.color = "rgb(104, 240, 99)";
+                   });
+                   a.forEach( a=>{
+                    a.style.color = "rgb(104, 240, 99)";
+                });
+                ochert[0].style.borderColor="rgb(104, 240, 99)";
+                h2[0].style.color="rgb(104, 240, 99)";
+                h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;";
+                break;
+                }
+                case 2:{
+                    document.body.style.backgroundColor = 'rgb(143 223 220)';
+                    buttons[0].style.borderColor = "rgb(3 71 255)";  
+                    buttons.forEach( btn=>{
+                        btn.style.color = "rgb(3 71 255)";
+                       });   
+                       a.forEach( a=>{
+                        a.style.color = "rgb(3 71 255)";
+                    });
+                    ochert[0].style.borderColor="rgb(3 71 255)";
+                    h2[0].style.color="rgb(3 71 255)";
+                    h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #6b00ff, 0 0 0.5em #6b00ff, 0 0 0.1em #6b00ff;";
+                break;
+                }   
+                case 3:{
+                  
+                    document.body.style.backgroundColor = 'rgb(143 145 223)';
+                    buttons[0].style.borderColor = "rgb(255 3 243)";  
+                    buttons.forEach( btn=>{
+                        btn.style.color = "rgb(255 3 243)";
+                       });    
+                       a.forEach( a=>{
+                        a.style.color = "rgb(255 3 243)";
+                    });
+                    ochert[0].style.borderColor="rgb(255 3 243)";
+                    h2[0].style.color="rgb(255 3 243)";
+                    h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1em #BFE2FF;";
+                break;
+                }
+                case 4:{
+                   
+                    document.body.style.backgroundColor = 'rgb(214 223 143)';
+                    buttons[0].style.borderColor = "rgb(212 255 3)";  
+                    buttons.forEach( btn=>{
+                        btn.style.color = "rgb(212 255 3)";
+                       });   
+                       a.forEach( a=>{
+                        a.style.color = "rgb(212 255 3)";
+                    });
+                    ochert[0].style.borderColor="rgb(212 255 3)";
+                    h2[0].style.color="rgb(212 255 3)";
+                    h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;";
+                break;
+                }         
+             }; 
+        }
+        changeColor();
+//
+       
         //Закрытие меню
         document.getElementById("btnClose").onclick = function()
         {

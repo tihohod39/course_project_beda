@@ -64,6 +64,7 @@ document.getElementById("btnTheme").onclick = function(){
     break;
     }         
  };
+
 }
 
 document.getElementById("btnLight").onclick = function(){
