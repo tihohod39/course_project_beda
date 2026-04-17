@@ -70,7 +70,6 @@ button:hover,a :hover ,.levels div:hover,.levels button:hover{
     margin-left: 30px;
     margin-top: -400px;
     padding: 20px;
-    border: 2px solid rgb(104, 240, 99);
     border-radius: 3px;
 }
 .levels div , .options button{

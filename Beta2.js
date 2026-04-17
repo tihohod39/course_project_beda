@@ -7,7 +7,74 @@
         const width = 18;
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
 
-
+// Изменение цвета
+let theme = 3;
+const buttons = document.querySelectorAll('button');
+const a = document.querySelectorAll('a');
+const ochert = document.getElementsByClassName('ochert');
+const h2 = document.querySelectorAll('h2');
+function changeColor() {
+    switch (theme) {
+        case 1:{
+        document.body.style.backgroundColor = 'rgb(37 37 37)';
+        buttons[0].style.borderColor = "rgb(104 240 99)";
+        buttons.forEach( btn=>{
+            btn.style.color = "rgb(104, 240, 99)";
+           });
+           a.forEach( a=>{
+            a.style.color = "rgb(104, 240, 99)";
+        });
+        ochert[0].style.borderColor="rgb(104, 240, 99)";
+        h2[0].style.color="rgb(104, 240, 99)";
+        h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;";
+        break;
+        }
+        case 2:{
+            document.body.style.backgroundColor = 'rgb(143 223 220)';
+            buttons[0].style.borderColor = "rgb(3 71 255)";  
+            buttons.forEach( btn=>{
+                btn.style.color = "rgb(3 71 255)";
+               });   
+               a.forEach( a=>{
+                a.style.color = "rgb(3 71 255)";
+            });
+            ochert[0].style.borderColor="rgb(3 71 255)";
+            h2[0].style.color="rgb(3 71 255)";
+            h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #6b00ff, 0 0 0.5em #6b00ff, 0 0 0.1em #6b00ff;";
+        break;
+        }   
+        case 3:{
+          
+            document.body.style.backgroundColor = 'rgb(143 145 223)';
+            buttons[0].style.borderColor = "rgb(255 3 243)";  
+            buttons.forEach( btn=>{
+                btn.style.color = "rgb(255 3 243)";
+               });    
+               a.forEach( a=>{
+                a.style.color = "rgb(255 3 243)";
+            });
+            ochert[0].style.borderColor="rgb(255 3 243)";
+            h2[0].style.color="rgb(255 3 243)";
+            h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1em #BFE2FF;";
+        break;
+        }
+        case 4:{
+            document.body.style.backgroundColor = 'rgb(214 223 143)';
+            buttons[0].style.borderColor = "rgb(212 255 3)";  
+            buttons.forEach( btn=>{
+                btn.style.color = "rgb(212 255 3)";
+               });   
+               a.forEach( a=>{
+                a.style.color = "rgb(212 255 3)";
+            });
+            ochert[0].style.borderColor="rgb(212 255 3)";
+            h2[0].style.color="rgb(212 255 3)";
+            h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;";
+        break;
+        }         
+     }; 
+}
+changeColor();
         
         //Закрытие меню
         document.getElementById("btnClose").onclick = function()
@@ -97,15 +164,19 @@
                 idBeingDragged - width,
                 idBeingDragged + width
             ];
-            
             if (validMoves.includes(idBeingReplaced)) {
                 this.className = shapeBeingDragged;
                 squares[idBeingDragged].className = shapeBeingReplaced;
-                checkMatches();
+                let isAmatch = checkMatches();
+                if(!isAmatch){
+                    squares[idBeingDragged].className = shapeBeingDragged;
+            this.className = shapeBeingReplaced;
+                }
             }
         }
         // 3. Проверка совпадений
         function checkMatches() {
+            let hasMatch =false;
             // Проверка по горизонтали
             for (let i = 0; i < 216; i++) {
                 let rowOfThree = [i, i + 1, i + 2];
@@ -121,6 +192,7 @@
                 if (i % 18 > 15) continue; 
 
                 if (rowOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 5;
                     scoreDisplay.innerHTML = score;
                     rowOfFive.forEach(index => {
@@ -129,6 +201,7 @@
                     });
                 }
                 if (rowOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 4;
                     scoreDisplay.innerHTML = score;
                     rowOfFour.forEach(index => {
@@ -137,6 +210,7 @@
                     });
                 }
                 if (rowOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 3;
                     scoreDisplay.innerHTML = score;
                     rowOfThree.forEach(index => {
@@ -159,6 +233,7 @@
                     continue
                     } 
                 if (columnOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 5;
                     scoreDisplay.innerHTML = score;
                     columnOfFive.forEach(index => {
@@ -167,6 +242,7 @@
                     });
                 }else
                 if (columnOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 4;
                     scoreDisplay.innerHTML = score;
                     columnOfFour.forEach(index => {
@@ -175,6 +251,7 @@
                     });
                 }else
                 if (columnOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 3;
                     scoreDisplay.innerHTML = score;
                     columnOfThree.forEach(index => {
@@ -183,7 +260,7 @@
                     });
                 }
             }
-            
+            return hasMatch ; 
         }
 // 4. Заполнение пустых мест
         function refillBoard(index) {

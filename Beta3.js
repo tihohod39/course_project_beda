@@ -169,11 +169,16 @@
             if (validMoves.includes(idBeingReplaced)) {
                 this.className = shapeBeingDragged;
                 squares[idBeingDragged].className = shapeBeingReplaced;
-                checkMatches();
+                let isAmatch =checkMatches();
+                if(!isAmatch){
+                    squares[idBeingDragged].className = shapeBeingDragged;
+            this.className = shapeBeingReplaced;
+                }
             }
         }
         // 3. Проверка совпадений
         function checkMatches() {
+            let hasMatch =false;
             // Проверка по горизонтали
             for (let i = 0; i < 108; i++) {
                 let rowOfThree = [i, i + 1, i + 2];
@@ -189,6 +194,7 @@
                 if (i % 12 > 9) continue; 
 
                 if (rowOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 5;
                     scoreDisplay.innerHTML = score;
                     rowOfFive.forEach(index => {
@@ -197,6 +203,7 @@
                     });
                 }
                 if (rowOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 4;
                     scoreDisplay.innerHTML = score;
                     rowOfFour.forEach(index => {
@@ -205,6 +212,7 @@
                     });
                 }
                 if (rowOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 3;
                     scoreDisplay.innerHTML = score;
                     rowOfThree.forEach(index => {
@@ -227,6 +235,7 @@
                     continue
                     } 
                 if (columnOfFive.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 5;
                     scoreDisplay.innerHTML = score;
                     columnOfFive.forEach(index => {
@@ -235,6 +244,7 @@
                     });
                 }else
                 if (columnOfFour.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 4;
                     scoreDisplay.innerHTML = score;
                     columnOfFour.forEach(index => {
@@ -243,6 +253,7 @@
                     });
                 }else
                 if (columnOfThree.every(index => squares[index].className === VIbrannayaFigura && !isBlank)) {
+                    hasMatch =true;
                     score += 3;
                     scoreDisplay.innerHTML = score;
                     columnOfThree.forEach(index => {
@@ -251,7 +262,7 @@
                     });
                 }
             }
-            
+            return hasMatch ;
         }
 // 4. Заполнение пустых мест
         function refillBoard(index) {
@@ -274,6 +285,11 @@
 
 
 
-
-
-        
+//Запаска
+/*
+        if (validMoves.includes(idBeingReplaced)) {
+            this.className = shapeBeingDragged;
+            squares[idBeingDragged].className = shapeBeingReplaced;
+            checkMatches();
+        }
+*/

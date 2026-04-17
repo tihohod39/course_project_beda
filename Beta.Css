@@ -17,7 +17,6 @@ text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1
 }
 h2{
     color: rgb(178, 248, 176);
-text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #bfffc4, 0 0 0.5em #bfffc4, 0 0 0.1em #bfffc4;
 }
 h1 span{
 animation: neon linear infinite 10s;
@@ -178,9 +177,7 @@ button,a{
     margin: 60px auto;
     border-radius: 10px;
     border: 3px solid rgb(0, 255, 127);
-    -webkit-box-shadow: 0px 0px 17px 5px rgba(0, 255, 127, 0.45);
-    -moz-box-shadow: 0px 0px 17px 5px rgba(0, 255, 127, 0.45);
-    box-shadow: 0px 0px 17px 5px rgba(0, 255, 127, 0.45);
+  
 }
 
 .btn-three {
