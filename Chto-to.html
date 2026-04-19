@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Idle RPG: Evolution</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --panel: #1e1e1e;
+            --accent: #c9ad60;
+            --text: #e0e0e0;
+            --common: #888;
+            --rare: #3498db;
+            --epic: #9b59b6;
+            --legendary: #f1c40f;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+        #game-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 350px;
+            height: 100vh;
+            gap: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .panel {
+            background: var(--panel);
+            border: 1px solid #333;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        h3, h4 { color: var(--accent); border-bottom: 1px solid #333; margin-top: 0; padding-bottom: 5px; }
+        
+        /* Боевая зона */
+        .battle-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hp-bar {
+            width: 100%;
+            height: 20px;
+            background: #441111;
+            border: 1px solid #ff4444;
+            position: relative;
+            margin: 5px 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .hp-fill { height: 100%; background: #ff4444; width: 100%; transition: width 0.2s linear; }
+        .log {
+            width: 100%;
+            height: 150px;
+            background: #0a0a0a;
+            font-size: 13px;
+            padding: 10px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            color: #ccc;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        /* Инвентарь и сетка */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .slot {
+            aspect-ratio: 1;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 28px;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        .slot:hover { border-color: var(--accent); background: #333; }
+        .slot.rare { border-color: var(--rare); }
+        .slot.epic { border-color: var(--epic); }
+        .slot.legendary { border-color: var(--legendary); box-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
+
+        /* Кнопки и вкладки */
+        .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: #333;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--accent); color: black; }
+        
+        .btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+        .btn:disabled { background: #444; color: #777; cursor: not-allowed; }
+        
+        .equipment-doll {
+            display: grid;
+            grid-template-areas: ". head ." "wpn body acc" ". foot .";
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        #class-selection-overlay {
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="class-selection-overlay">
+    <h1 style="color: var(--accent); font-size: 3em; margin-bottom: 10px;">MEDIEVAL IDLE</h1>
+    <p style="margin-bottom: 30px; font-size: 1.2em;">Выберите начальный класс:</p>
+    <div style="display: flex; gap: 15px;">
+        <button class="btn" onclick="game.start('Warrior')" style="width: 140px; height: 60px;">Воин 🛡️</button>
+        <button class="btn" onclick="game.start('Rogue')" style="width: 140px; height: 60px;">Разбойник 🗡️</button>
+        <button class="btn" onclick="game.start('Mage')" style="width: 140px; height: 60px;">Маг 🔮</button>
+    </div>
+</div>
+
+<div id="game-container" style="visibility: hidden;">
+    <!-- Левая панель: Герой -->
+    <div class="panel">
+        <h3>ГЕРОЙ</h3>
+        <div style="background: #252525; padding: 10px; border-radius: 5px;">
+            Уровень: <span id="h-lvl">1</span><br>
+            Опыт: <span id="h-exp">0</span> / <span id="h-next-exp">100</span>
+        </div>
+        
+        <div class="equipment-doll">
+            <div class="slot" id="eq-head" style="grid-area: head" onclick="game.unequip('head')"></div>
+            <div class="slot" id="eq-weapon" style="grid-area: wpn" onclick="game.unequip('weapon')"></div>
+            <div class="slot" id="eq-armor" style="grid-area: body" onclick="game.unequip('armor')"></div>
+            <div class="slot" id="eq-boots" style="grid-area: foot" onclick="game.unequip('boots')"></div>
+        </div>
+
+        <div id="hero-stats" style="line-height: 1.8; font-size: 15px;"></div>
+    </div>
+
+    <!-- Центральная панель: Бой -->
+    <div class="panel battle-zone">
+        <h2 id="stage-info" style="color: var(--accent); margin: 0;">WAVE 1</h2>
+        <div style="width: 100%; margin: 20px 0;">
+            <div id="enemy-name" style="font-weight: bold; margin-bottom: 5px;">Monster</div>
+            <div class="hp-bar"><div id="enemy-hp-fill" class="hp-fill"></div></div>
+            <div id="enemy-hp-text">0 / 0</div>
+        </div>
+
+        <div style="font-size: 48px; margin: 10px;">⚔️</div>
+
+        <div style="width: 100%; margin: 20px 0;">
+            <div style="font-weight: bold; margin-bottom: 5px;">Вы (Ур. <span id="h-lvl-display">1</span>)</div>
+            <div class="hp-bar"><div id="hero-hp-fill" class="hp-fill"></div></div>
+            <div id="hero-hp-text">0 / 0</div>
+        </div>
+
+        <div class="log" id="battle-log"></div>
+    </div>
+
+    <!-- Правая панель: Магазин и Инвентарь -->
+    <div class="panel">
+        <div class="tabs">
+            <button id="tab-btn-shop" class="tab-btn active" onclick="game.switchTab('shop')">МАГАЗИН</button>
+            <button id="tab-btn-inv" class="tab-btn" onclick="game.switchTab('inv')">ИНВЕНТАРЬ</button>
+        </div>
+
+        <div id="gold-display" style="text-align: center; font-size: 20px; color: #ffd700; margin-bottom: 15px; font-weight: bold;">💰 0</div>
+
+        <div id="content-shop">
+            <h4>Улучшения</h4>
+            <div id="upgrades-list"></div>
+        </div>
+
+        <div id="content-inv" style="display: none;">
+            <div class="grid" id="inventory-grid"></div>
+            <p style="font-size: 11px; color: #888; margin-top: 15px; text-align: center;">ЛКМ — Надеть | ПКМ — Продать</p>
+        </div>
+        
+        <div id="evo-panel" style="display:none; margin-top: 20px; padding: 10px; border: 2px solid gold; border-radius: 5px;">
+            <h4 style="color: gold; text-align:center;">ЭВОЛЮЦИЯ ДОСТУПНА!</h4>
+            <div id="evo-options"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+class Game {
+    constructor() {
+        this.state = {
+            gold: 0, wave: 1,
+            hero: {
+                class: '', subClass: '', lvl: 1, exp: 0, nextExp: 100,
+                hp: 100, maxHp: 100, dmg: 10, def: 0,
+                eq: { head: null, weapon: null, armor: null, boots: null },
+                inv: [],
+                upgrades: { weapon: 0, armor: 0, training: 0 }
+            },
+            enemy: { hp: 0, maxHp: 0, dmg: 0, name: '' }
+        };
+        this.timer = 0;
+    }
+
+    start(cls) {
+        this.state.hero.class = cls;
+        if(cls === 'Warrior') { this.state.hero.maxHp += 50; this.state.hero.def += 5; }
+        if(cls === 'Rogue') { this.state.hero.dmg += 5; }
+        this.state.hero.hp = this.state.hero.maxHp;
+        
+        document.getElementById('class-selection-overlay').style.display = 'none';
+        document.getElementById('game-container').style.visibility = 'visible';
+        
+        this.load();
+        this.spawnEnemy();
+        this.run();
+    }
+
+    // --- СИСТЕМА ВКЛАДОК ---
+    switchTab(tab) {
+        const isShop = tab === 'shop';
+        document.getElementById('content-shop').style.display = isShop ? 'block' : 'none';
+        document.getElementById('content-inv').style.display = isShop ? 'none' : 'block';
+        
+        document.getElementById('tab-btn-shop').className = `tab-btn ${isShop ? 'active' : ''}`;
+        document.getElementById('tab-btn-inv').className = `tab-btn ${!isShop ? 'active' : ''}`;
+    }
+
+    // --- БОЕВАЯ ЛОГИКА ---
+    spawnEnemy() {
+        const isBoss = this.state.wave % 10 === 0;
+        const mult = Math.pow(1.12, this.state.wave);
+        const hp = Math.floor(50 * mult * (isBoss ? 5 : 1));
+        this.state.enemy = {
+            hp: hp, maxHp: hp,
+            dmg: Math.floor(5 * mult),
+            name: isBoss ? "БОСС ЭТАЖА 👑" : `Гоблин [Ур.${this.state.wave}]`
+        };
+    }
+
+    run() {
+        setInterval(() => {
+            this.timer += 100;
+            if(this.timer >= 1200) {
+                this.timer = 0;
+                this.tick();
+            }
+            this.render();
+        }, 100);
+    }
+
+    tick() {
+        const { hero, enemy } = this.state;
+        
+        // Герой атакует
+        let hDmg = this.getHeroDmg();
+        if(hero.subClass === 'Assassin' && Math.random() < 0.01) enemy.hp = 0;
+        enemy.hp -= hDmg;
+        this.log(`Вы нанесли ${hDmg.toFixed(1)} урона`);
+
+        if(enemy.hp <= 0) return this.onWin();
+
+        // Враг атакует
+        let eDmg = Math.max(1, enemy.dmg - this.getHeroDef());
+        hero.hp -= eDmg;
+        if(hero.subClass === 'Paladin') hero.hp = Math.min(hero.maxHp, hero.hp + hero.maxHp * 0.02);
+
+        if(hero.hp <= 0) {
+            this.log("Поражение! Волна сброшена.", "#ff4444");
+            this.state.wave = Math.max(1, this.state.wave - 1);
+            hero.hp = hero.maxHp;
+            this.spawnEnemy();
+        }
+    }
+
+    onWin() {
+        const gold = Math.floor(10 * Math.pow(1.1, this.state.wave));
+        const exp = Math.floor(15 * Math.pow(1.1, this.state.wave) * (1 + this.state.hero.upgrades.training * 0.05));
+        
+        this.state.gold += gold;
+        this.state.hero.exp += exp;
+        this.state.wave++;
+        
+        if(Math.random() < 0.2) this.dropItem();
+        if(this.state.hero.exp >= this.state.hero.nextExp) this.levelUp();
+        
+        this.spawnEnemy();
+        this.save();
+    }
+
+    // --- ПРЕДМЕТЫ ---
+    dropItem() {
+        const rVal = Math.random();
+        const rarity = rVal < 0.01 ? 'legendary' : rVal < 0.05 ? 'epic' : rVal < 0.15 ? 'rare' : 'common';
+        const types = ['weapon', 'armor', 'head', 'boots'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        
+        const mult = { common: 1, rare: 1.5, epic: 2.5, legendary: 5 }[rarity];
+        const stat = Math.floor((5 + this.state.wave * 1.2) * mult);
+        
+        if(this.state.hero.inv.length < 16) {
+            this.state.hero.inv.push({ type, rarity, stat, icon: this.getIcon(type), id: Date.now() });
+            this.log(`Найден предмет: ${rarity} ${type}!`, '#ffd700');
+        }
+    }
+
+    getIcon(type) {
+        return { weapon: '⚔️', armor: '👕', head: '🪖', boots: '👞' }[type];
+    }
+
+    equip(idx) {
+        const item = this.state.hero.inv[idx];
+        const old = this.state.hero.eq[item.type];
+        this.state.hero.eq[item.type] = item;
+        this.state.hero.inv.splice(idx, 1);
+        if(old) this.state.hero.inv.push(old);
+    }
+
+    unequip(slot) {
+        const item = this.state.hero.eq[slot];
+        if(item && this.state.hero.inv.length < 16) {
+            this.state.hero.inv.push(item);
+            this.state.hero.eq[slot] = null;
+        }
+    }
+
+    // --- ВСПОМОГАТЕЛЬНЫЕ ---
+    getHeroDmg() {
+        let d = this.state.hero.dmg + (this.state.hero.upgrades.weapon * 3);
+        if(this.state.hero.eq.weapon) d += this.state.hero.eq.weapon.stat;
+        return d;
+    }
+
+    getHeroDef() {
+        let d = this.state.hero.def + (this.state.hero.upgrades.armor * 2);
+        ['head', 'armor', 'boots'].forEach(s => {
+            if(this.state.hero.eq[s]) d += this.state.hero.eq[s].stat;
+        });
+        return d;
+    }
+
+    levelUp() {
+        const h = this.state.hero;
+        h.lvl++;
+        h.exp = 0;
+        h.nextExp = Math.floor(h.nextExp * 1.5);
+        h.maxHp += 25;
+        h.dmg += 3;
+        h.hp = h.maxHp;
+        if(h.lvl === 50) this.showEvo();
+        this.log(`Уровень повышен: ${h.lvl}!`, '#3498db');
+    }
+
+    showEvo() {
+        const panel = document.getElementById('evo-panel');
+        const box = document.getElementById('evo-options');
+        panel.style.display = 'block';
+        box.innerHTML = '';
+        const options = { Warrior: ['Paladin', 'Berserker'], Rogue: ['Assassin', 'Sniper'], Mage: ['Archmage', 'Necromancer'] };
+        options[this.state.hero.class].forEach(opt => {
+            const b = document.createElement('button');
+            b.className = 'btn';
+            b.innerText = opt;
+            b.onclick = () => { this.state.hero.subClass = opt; panel.style.display = 'none'; };
+            box.appendChild(b);
+        });
+    }
+
+    log(m, c = '#aaa') {
+        const l = document.getElementById('battle-log');
+        l.innerHTML = `<div style="color:${c}">> ${m}</div>` + l.innerHTML;
+        if(l.children.length > 25) l.lastChild.remove();
+    }
+
+    // --- ОТРИСОВКА ---
+    render() {
+        const { hero, enemy, gold, wave } = this.state;
+        
+        // Бары здоровья
+        document.getElementById('enemy-hp-fill').style.width = (enemy.hp / enemy.maxHp * 100) + '%';
+        document.getElementById('hero-hp-fill').style.width = (hero.hp / hero.maxHp * 100) + '%';
+        document.getElementById('enemy-hp-text').innerText = `${Math.max(0, Math.floor(enemy.hp))} / ${enemy.maxHp}`;
+        document.getElementById('hero-hp-text').innerText = `${Math.max(0, Math.floor(hero.hp))} / ${hero.maxHp}`;
+        
+        // Тексты
+        document.getElementById('gold-display').innerText = `💰 ${Math.floor(gold)}`;
+        document.getElementById('stage-info').innerText = `WAVE ${wave}`;
+        document.getElementById('h-lvl').innerText = hero.lvl;
+        document.getElementById('h-lvl-display').innerText = hero.lvl;
+        document.getElementById('h-exp').innerText = Math.floor(hero.exp);
+        document.getElementById('h-next-exp').innerText = hero.nextExp;
+        document.getElementById('enemy-name').innerText = enemy.name;
+        
+        document.getElementById('hero-stats').innerHTML = `
+            Урон: ⚔️ ${this.getHeroDmg().toFixed(1)} <br>
+            Защита: 🛡️ ${this.getHeroDef()} <br>
+            Класс: ${hero.subClass || hero.class}
+        `;
+
+        // Кукла
+        ['head', 'weapon', 'armor', 'boots'].forEach(s => {
+            const slot = document.getElementById(`eq-${s}`);
+            const item = hero.eq[s];
+            slot.innerHTML = item ? item.icon : '';
+            slot.className = `slot ${item ? item.rarity : ''}`;
+        });
+
+        // Инвентарь
+        const invGrid = document.getElementById('inventory-grid');
+        invGrid.innerHTML = '';
+        for(let i=0; i<16; i++) {
+            const item = hero.inv[i];
+            const div = document.createElement('div');
+            div.className = `slot ${item ? item.rarity : ''}`;
+            if(item) {
+                div.innerHTML = item.icon;
+                div.onclick = () => this.equip(i);
+                div.oncontextmenu = (e) => { e.preventDefault(); this.state.gold += item.stat; this.state.hero.inv.splice(i, 1); };
+                div.title = `Бонус: +${item.stat}`;
+            }
+            invGrid.appendChild(div);
+        }
+
+        // Магазин
+        const upgList = document.getElementById('upgrades-list');
+        upgList.innerHTML = '';
+        [
+            { id: 'weapon', n: 'Заточка (Урон)', c: 50 },
+            { id: 'armor', n: 'Закалка (Защита)', c: 50 },
+            { id: 'training', n: 'Учебник (Опыт)', c: 100 }
+        ].forEach(u => {
+            const cost = Math.floor(u.c * Math.pow(1.15, hero.upgrades[u.id]));
+            const b = document.createElement('button');
+            b.className = 'btn';
+            b.disabled = gold < cost;
+            b.innerHTML = `${u.n} [Ур.${hero.upgrades[u.id]}]<br>${cost} 💰`;
+            b.onclick = () => { if(this.state.gold >= cost) { this.state.gold -= cost; this.state.hero.upgrades[u.id]++; }};
+            upgList.appendChild(b);
+        });
+    }
+
+    save() { localStorage.setItem('med_rpg_v2', JSON.stringify(this.state)); }
+    load() {
+        const saved = localStorage.getItem('med_rpg_v2');
+        if(saved) {
+            const data = JSON.parse(saved);
+            if(data.hero.class === this.state.hero.class) Object.assign(this.state, data);
+        }
+    }
+}
+
+const game = new Game();
+</script>
+</body>
+</html>

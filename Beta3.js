@@ -293,3 +293,10 @@
             checkMatches();
         }
 */
+
+
+// Иконка гриба
+//https://cdn-icons-png.flaticon.com/512/261/261161.png
+
+//Переделать под другой стиль 
+//https://www.behance.net/gallery/164740991/ikonki-dlja-igry-tri-v-rjad
