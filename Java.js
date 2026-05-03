@@ -4,6 +4,15 @@ const a = document.querySelectorAll('a');
 let button = document.getElementsByClassName("buttons");
 let level = document.getElementsByClassName("levels");
 let option = document.getElementsByClassName("options");
+// Музыка
+window.addEventListener('click', function() {
+    const audio = document.getElementById('bgMusic');
+    if (audio.paused) {
+        audio.play();
+    }
+}, { once: true });
+
+
 document.getElementById("btnOpen").onclick = function(){
     let vid = document.getElementsByClassName("levels");
             vid[0].style.visibility = "visible";

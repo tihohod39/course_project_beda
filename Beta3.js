@@ -5,6 +5,13 @@
         let score = 0;
         const width = 12;
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
+// Музыка
+window.addEventListener('click', function() {
+    const audio = document.getElementById('bgMusic');
+    if (audio.paused) {
+        audio.play();
+    }
+}, { once: true });
 
 // Изменение цвета
         let theme = 3;
