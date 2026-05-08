@@ -1,4 +1,4 @@
-let theme = 3;
+let theme = 2;
 const buttons = document.querySelectorAll('button');
 const a = document.querySelectorAll('a');
 let button = document.getElementsByClassName("buttons");
@@ -51,6 +51,7 @@ document.getElementById("btnTheme").onclick = function(){
     });
     ochert[0].style.borderColor="rgb(104, 240, 99)";
     h1[0].style.color="rgb(104, 240, 99)";
+    level[0].style.borderColor="rgb(104, 240, 99)";
     break;
     }
     case 2:{
@@ -64,6 +65,7 @@ document.getElementById("btnTheme").onclick = function(){
         });
         ochert[0].style.borderColor="rgb(3 71 255)";
         h1[0].style.color="rgb(3 71 255)";
+        level[0].style.borderColor="rgb(3 71 255)";
     break;
     }   
     case 3:{
@@ -78,6 +80,7 @@ document.getElementById("btnTheme").onclick = function(){
         });
         ochert[0].style.borderColor="rgb(255 3 243)";
         h1[0].style.color="rgb(255 3 243)";
+        level[0].style.borderColor="rgb(255 3 243)";
     break;
     }
     case 4:{
@@ -91,6 +94,7 @@ document.getElementById("btnTheme").onclick = function(){
         });
         ochert[0].style.borderColor="rgb(212 255 3)";
         h1[0].style.color="rgb(212 255 3)";
+        level[0].style.borderColor="rgb(212 255 3)";
     break;
     }         
  }; 

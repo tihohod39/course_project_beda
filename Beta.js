@@ -7,12 +7,12 @@
         const shapes = ['circle', 'square','oval','pyramid','sun','moon'];// Не смотрите на имена , они рандомные
 
         // Музыка
-window.addEventListener('click', function() {
+/*window.addEventListener('click', function() {
     const audio = document.getElementById('bgMusic');
     if (audio.paused) {
         audio.play();
     }
-}, { once: true });
+}, { once: true });*/
 
 // Изменение цвета
 let theme = 3;
@@ -64,12 +64,12 @@ function changeColor() {
             });
             ochert[0].style.borderColor="rgb(255 3 243)";
             h2[0].style.color="rgb(255 3 243)";
-            h2[1].style.color="rgb(255 3 243)";
+           // h2[1].style.color="rgb(255 3 243)";
             h2[0].style.textShadow = "0 -40px 100px, 0 0 2px, 0 0 1em #BFE2FF, 0 0 0.5em #BFE2FF, 0 0 0.1em #BFE2FF;";
         break;
         }
         case 4:{
-           
+            
             document.body.style.backgroundColor = 'rgb(214 223 143)';
             buttons[0].style.borderColor = "rgb(212 255 3)";  
             buttons.forEach( btn=>{
@@ -102,7 +102,7 @@ changeColor();
             vid[0].style.visibility = "visible";
         }
 
-        //Открытие настроек *NEW
+       /* //Открытие настроек *NEW
         document.getElementById("btnOptions").onclick = function()
         {
             let vid = document.getElementsByClassName("options");
@@ -114,6 +114,9 @@ changeColor();
               let vid = document.getElementsByClassName("options");
               vid[0].style.visibility = "hidden";
           }
+          /*
+
+
           //change theme1
          /* document.getElementById("btnTheme").onclick = function(){
             let vid = document.getElementById("btnTheme")
